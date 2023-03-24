@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,8 +9,13 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="363dp">
+        app:cardBackgroundColor="@color/teal_700"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,10 +27,10 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:contentDescription="@string/product_image"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="10dp"
-                tools:layout_editor_absoluteY="10dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/cartProductName"
@@ -32,8 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="@string/sample_product_name"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/dark_dark"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/cartProductImage"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -42,18 +47,21 @@
                 android:id="@+id/cartProductPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="51dp"
                 android:text="@string/sample_product_price"
-                app:layout_constraintStart_toEndOf="@+id/cartProductImage"
-                app:layout_constraintTop_toBottomOf="@+id/cartProductName" />
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/cartProductName"
+                app:layout_constraintTop_toBottomOf="@+id/cartProductName"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/cartQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
                 android:text="Qty: 10"
-                android:layout_marginRight="15dp"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -61,4 +69,5 @@
 
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
