@@ -3,7 +3,6 @@ package org.apppuntukan.views.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import org.apppuntukan.R;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import org.apppuntukan.model.Product;
+import org.apppuntukan.viewmodel.ICard;
 import org.apppuntukan.model.ProductService;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +22,12 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
     private final List<Product> products;
 
-    public MainCustomerAdapter(List<Product> products, Context context) {
+    private final ICard iCard;
+
+    public MainCustomerAdapter(List<Product> products, Context context, ICard iCard) {
         this.products = products;
         this.context = context;
+        this.iCard = iCard;
     }
 
     @NonNull
@@ -33,7 +36,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         View from = LayoutInflater.from(this.context)
                 .inflate(R.layout.product_card, viewGroup, false);
 
-        return new CardHolder(from);
+        return new CardHolder(from, iCard);
     }
 
     @Override
@@ -66,7 +69,8 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         private final TextView availableStock;
         private final Button addToCart;
 
-        public CardHolder(@NonNull View itemView) {
+        public CardHolder(@NonNull View itemView, ICard iCard) {
+
             super(itemView);
             imageView = itemView.findViewById(R.id.productImage);
             productName = (TextView) itemView.findViewById(R.id.productName);
@@ -74,10 +78,14 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
             availableStock = (TextView) itemView.findViewById(R.id.availableStock);
             addToCart = itemView.findViewById(R.id.addToCart);
 
-            Log.d("imageView", String.valueOf(imageView));
-            Log.d("productName", String.valueOf(productName));
-            Log.d("price", String.valueOf(price));
-            Log.d("availableStock", String.valueOf(availableStock));
+            itemView.setOnClickListener(v -> {
+                if (iCard != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        iCard.onClickCard(position);
+                    }
+                }
+            });
         }
 
         public ImageView getImageView() {
