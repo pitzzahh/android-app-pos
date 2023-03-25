@@ -24,12 +24,10 @@ public class CartActivity extends NoActionBarActivity {
         setContentView(binding.getRoot());
 
         TextView price = findViewById(R.id.label_price);
-        price.setText(String.format("$%s", ProductService.getInstance().getTotalCartPrice()));
+        price.setText(String.format("$%s", ProductService.getInstance().computeTotal()));
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-        CartProductAdapter cartProductAdapter = new CartProductAdapter();
-
-        recyclerView.setAdapter(cartProductAdapter);
+        recyclerView.setAdapter(new CartProductAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
