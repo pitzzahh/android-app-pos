@@ -31,7 +31,7 @@ public class MainActivity extends NoActionBarActivity implements ICard {
         setContentView(binding.getRoot());
 
         recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(new MainCustomerAdapter(ProductService.getInstance().getProducts(), this, this));
+        recyclerView.setAdapter(new MainCustomerAdapter(this, this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
     }
