@@ -8,7 +8,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        app:cardCornerRadius="12dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="#CDC7C7"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +45,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sample_product_name"
-                                android:textColor="#FF018786"
+                                android:textColor="@color/black"
                                 app:layout_constraintTop_toBottomOf="@+id/productImage"
                                 tools:layout_editor_absoluteX="129dp" />
 
@@ -54,7 +55,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/sample_product_price"
-                                android:textColor="#000"
+                                android:textColor="@color/black"
                                 android:textSize="13sp"
                                 app:layout_constraintTop_toBottomOf="@+id/productImage"
                                 tools:layout_editor_absoluteX="129dp" />
@@ -64,7 +65,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Available stocks: 100"
-                                android:textColor="#000"
+                                android:textColor="@color/black"
                                 android:textSize="9sp"
                                 app:layout_constraintTop_toBottomOf="@+id/cartProductPrice"
                                 tools:layout_editor_absoluteX="129dp" />
@@ -73,10 +74,10 @@
 
                         <Button
                             android:id="@+id/addToCart"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:background="@drawable/add_cart"
-                            app:backgroundTint="#FF018786"
+                            app:backgroundTint="#B65325"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
