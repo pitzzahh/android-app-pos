@@ -15,7 +15,7 @@ public class CheckoutActivityViewModel extends ViewModelBase {
         Intent intent = new Intent(view.getContext(), ConfirmationActivity.class);
 
         String payment = ((EditText) view.findViewById(R.id.amount_to_pay)).getText().toString();
-        String totalCartPrice = ProductService.getInstance().getTotalCartPrice();
+        String totalCartPrice = ProductService.getInstance().computeTotal();
 
         if (payment.matches("\\d|\\d+")) {
             double total = Double.parseDouble(totalCartPrice);
