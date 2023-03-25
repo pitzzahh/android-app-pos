@@ -19,7 +19,7 @@ public class CheckoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_checkout);
         Button button = findViewById(R.id.btn_open_confirmation);
 
-        String totalCartPrice = ProductService.getInstance().getTotalCartPrice();
+        String totalCartPrice = ProductService.getInstance().computeTotal();
 
         button.setOnClickListener(view -> {
             Intent intent = new Intent(this, ConfirmationActivity.class);

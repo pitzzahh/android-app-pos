@@ -22,32 +22,8 @@ public class Product {
         this.id = id;
         this.productName = productName;
         this.price = price;
-        this.stock = 20;
+        this.stock = 10;
         this.tax = 0.5;
-    }
-
-    public Product(String productName, double price, int stock) {
-        this.productName = productName;
-        this.price = price;
-        this.stock = stock;
-        this.tax = 0.5;
-    }
-
-    public Product(String productName, double price, int stock, int quantity) {
-        this.productName = productName;
-        this.price = price;
-        this.stock = stock;
-        this.quantity = quantity;
-        this.tax = 0.5;
-    }
-
-    public Product(int id, String productName, double price, double tax, int stock, int quantity) {
-        this.id = id;
-        this.productName = productName;
-        this.price = price;
-        this.tax = tax;
-        this.stock = stock;
-        this.quantity = quantity;
     }
 
     public String getProductName() {

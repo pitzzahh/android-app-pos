@@ -1,43 +1,40 @@
 package org.apppuntukan.views;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Button;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import org.apppuntukan.R;
+import org.apppuntukan.databinding.ActivityConfirmationBinding;
 import org.apppuntukan.model.Product;
 import org.apppuntukan.model.ProductService;
+import org.apppuntukan.viewmodel.ConfirmationActivityViewModel;
+import java.util.List;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirmation);
+        ActivityConfirmationBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_confirmation);
+        binding.setConfirmationViewModel(new ViewModelProvider(this).get(ConfirmationActivityViewModel.class));
 
-        Button button = findViewById(R.id.btn_open_products);
-
-        button.setOnClickListener(view -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
+        setContentView(binding.getRoot());
 
         TextView price = findViewById(R.id.lbl_price);
         price.setText(String.format("$%s", ProductService.getInstance().getTotal()));
         TextView change = findViewById(R.id.lbl_change);
         change.setText(String.format("$%s", ProductService.getInstance().getChange()));
 
-        for (int i = 0; i < ProductService.getInstance().getCartProducts().size(); i++) {
-            Product product = ProductService.getInstance().getCartProducts().get(i);
-            if (product.getStock() > 0) product.setStock(product.getStock() - 1);
-            if (ProductService.getInstance().getProducts().get(i).getId() == product.getId()) {
-                ProductService.getInstance().getProducts().get(i).setStock(product.getStock());
-                Log.w(String.format("product: %d", product.getId()), String.valueOf(ProductService.getInstance().getProducts().get(i).getStock()));
+        List<Product> products = ProductService.getInstance().getProducts();
+        List<Product> cartProducts = ProductService.getInstance().getCartProducts();
+        for (int i = 0; i < cartProducts.size(); i++) {
+            Product product = cartProducts.get(i);
+            if (products.get(i).getId() == product.getId()) { // FIXME: 25/03/2023 decrease product stock based on ordered quantity
+                if (product.getStock() >= 0) product.setStock(product.getStock() - product.getQuantity());
+                products.get(i).setStock(product.getStock());
             }
         }
-        ProductService.getInstance().getCartProducts().clear();
     }
 }
