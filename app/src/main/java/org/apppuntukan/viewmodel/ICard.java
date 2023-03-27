@@ -1,5 +1,7 @@
 package org.apppuntukan.viewmodel;
 
+import android.view.View;
+
 public interface ICard {
-    void onClickCard(int position);
+    void onClickCard(View v);
 }
