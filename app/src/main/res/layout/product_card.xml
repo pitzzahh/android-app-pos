@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="String" />
         <variable name="product" type="org.apppuntukan.model.Product"/>
         <variable name="handler" type="org.apppuntukan.viewmodel.ICard"/>
     </data>
