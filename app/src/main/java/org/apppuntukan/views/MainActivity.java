@@ -2,9 +2,9 @@ package org.apppuntukan.views;
 
 import org.apppuntukan.R;
 import android.os.Bundle;
+import android.view.View;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import org.apppuntukan.model.ProductService;
 import org.apppuntukan.viewmodel.ICard;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +18,6 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
 public class MainActivity extends NoActionBarActivity implements ICard {
 
-    private RecyclerView recyclerView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +28,24 @@ public class MainActivity extends NoActionBarActivity implements ICard {
 
         setContentView(binding.getRoot());
 
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(new MainCustomerAdapter(this, this));
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(new MainCustomerAdapter(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
     }
 
     @Override
-    public void onClickCard(int position) {
-        Snackbar.make(recyclerView, "Card clicked", Snackbar.LENGTH_LONG)
+    public void onClickCard(View v) { // FIXME: 28/03/2023 Won't work
+        Snackbar.make(v, "Card clicked", Snackbar.LENGTH_SHORT)
                 .show();
+        System.out.println("Clicked card");
+    }
+
+    @Override
+    public void onAddToCart(View v) { // FIXME: 28/03/2023 Won't work
+        Snackbar.make(v, "Added to cart", Snackbar.LENGTH_SHORT)
+                .show();
+        System.out.println("Add to Cart clicked");
     }
 
 }

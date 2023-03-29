@@ -1,91 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical">
-
-    <androidx.cardview.widget.CardView
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="product" type="org.apppuntukan.model.Product"/>
+        <variable name="handler" type="org.apppuntukan.viewmodel.ICard"/>
+    </data>
+    <LinearLayout
         android:layout_width="wrap_content"
-        app:cardCornerRadius="15dp"
-        app:cardBackgroundColor="#CDC7C7"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            app:cardCornerRadius="15dp"
+            android:clickable="true"
+            android:onClick="@{handler::onClickCard}"
+            app:cardBackgroundColor="#CDC7C7"
+            android:layout_height="wrap_content"
+            android:focusable="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/productImage"
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
-                        android:contentDescription="@string/product_image"/>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/productName"
-                                android:layout_marginBottom="2dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/productImage"
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:contentDescription="@string/product_image"
+                            android:src="@drawable/product_icon"
+                            tools:ignore="ImageContrastCheck" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/sample_product_name"
-                                android:textColor="@color/black"
-                                app:layout_constraintTop_toBottomOf="@+id/productImage"
-                                tools:layout_editor_absoluteX="129dp" />
+                                android:orientation="vertical"
+                                tools:ignore="ExtraText,MissingConstraints">
+                                <TextView
+                                    android:id="@+id/productName"
+                                    android:layout_marginBottom="2dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{product.productName}"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintTop_toBottomOf="@+id/productImage"
+                                    tools:layout_editor_absoluteX="129dp" />
 
-                            <TextView
-                                android:id="@+id/productPrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:text="@string/sample_product_price"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:layout_constraintTop_toBottomOf="@+id/productImage"
-                                tools:layout_editor_absoluteX="129dp" />
+                                <TextView
+                                    android:id="@+id/productPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="@{`$` + product.price}"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp"
+                                    app:layout_constraintTop_toBottomOf="@+id/productImage"
+                                    tools:layout_editor_absoluteX="129dp" />
 
-                            <TextView
-                                android:id="@+id/availableStock"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Available stocks: 100"
-                                android:textColor="@color/black"
-                                android:textSize="9sp"
-                                app:layout_constraintTop_toBottomOf="@+id/cartProductPrice"
-                                tools:layout_editor_absoluteX="129dp" />
-                        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/availableStock"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{`Available stock: ` + product.stock}"
+                                    android:textColor="@color/black"
+                                    android:textSize="9sp"
+                                    app:layout_constraintTop_toBottomOf="@+id/cartProductPrice"
+                                    tools:layout_editor_absoluteX="129dp"
+                                    tools:ignore="SmallSp" />
+                            </LinearLayout>
 
+                            <Button
+                                android:id="@+id/addToCart"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="@drawable/add_cart"
+                                android:onClick="@{handler::onAddToCart}"
+                                app:backgroundTint="#B65325"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <Button
-                            android:id="@+id/addToCart"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:background="@drawable/add_cart"
-                            app:backgroundTint="#B65325"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-    </androidx.cardview.widget.CardView>
-
-</LinearLayout>
+    </LinearLayout>
+</layout>
