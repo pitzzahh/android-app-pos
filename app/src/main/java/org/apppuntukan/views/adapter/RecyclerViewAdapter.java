@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import org.apppuntukan.model.Product;
 import org.apppuntukan.viewmodel.ICard;
-import org.apppuntukan.model.ProductService;
+import org.apppuntukan.model.ProdServ;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,14 +19,14 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
 
     private final Activity activity;
     private final int layoutId;
-    private final List<Product> productList;
+    private final List<Product> products;
 
     private final RecyclerViewAdapter<T> adapter;
 
-    public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> productList) {
+    public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> products) {
         this.activity = activity;
         this.layoutId = layoutId;
-        this.productList = productList;
+        this.products = products;
         this.adapter = this;
     }
 
@@ -39,28 +39,31 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                         layoutId,
                         viewGroup,
                         false
-                ), adapter);
+                ), adapter, products);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.CardHolder<T> holder, int position) {
-        holder.bindCard(productList.get(position));
+        holder.bindCard(products.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return products.size();
     }
 
     public static class CardHolder<T extends ViewDataBinding> extends RecyclerView.ViewHolder implements ICard {
 
         private final RecyclerViewAdapter<T> adapter;
+
+        private final List<Product> products;
         private final T binding;
 
-        public CardHolder(T binding, RecyclerViewAdapter<T> adapter) {
+        public CardHolder(T binding, RecyclerViewAdapter<T> adapter, List<Product> products) {
             super(binding.getRoot());
             this.binding = binding;
             this.adapter = adapter;
+            this.products = products;
         }
 
         void bindCard(Product product) {
@@ -84,20 +87,22 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
         @Override
         public void onIncreaseQuantity(View v) {
             int position = super.getLayoutPosition();
-            ProductService.getInstance().addProductQuantity(ProductService.getInstance().getProducts().get(position));
+            ProdServ.instance().addProductQuantity(products.get(position));
             adapter.notifyItemChanged(position);
         }
 
         @Override
         public void onDecreaseQuantity(View v) {
             int position = super.getLayoutPosition(); // get the position of the card
-            Product product = ProductService.getInstance().getProducts().get(position);
-            boolean noQuantityLeft = ProductService.getInstance().removeProductQuantityOrRemove(product);
+            Product product = products.get(position);
+            boolean noQuantityLeft = ProdServ.instance().removeProductQuantityOrRemove(product);
             if (noQuantityLeft) {
-                ProductService.getInstance().removeProductFromCart(product);
-                adapter.notifyItemRemoved(position);
+                Product removedProduct = ProdServ.instance().removeProductFromCart(product);
+                if (removedProduct != null) {
+                    adapter.notifyItemRemoved(position);
+                }
             }
-            adapter.notifyItemChanged(position);
+            else adapter.notifyItemChanged(position);
         }
 
         @Override
@@ -109,10 +114,10 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
         @Override
         public void onAddToCart(View view) {
             int pos = super.getLayoutPosition(); // get the position of the card
-            if (ProductService.getInstance().isAlreadyInCart(ProductService.getInstance().getProducts().get(pos))) {
-                ProductService.getInstance().addProductQuantity(ProductService.getInstance().getProducts().get(pos));
+            if (ProdServ.instance().isAlreadyInCart(products.get(pos))) {
+                ProdServ.instance().addProductQuantity(products.get(pos));
             } else {
-                ProductService.getInstance().addProductToCart(ProductService.getInstance().getProducts().get(pos));
+                ProdServ.instance().addProductToCart(products.get(pos));
             }
             Snackbar.make(view, "Product added to cart", Snackbar.LENGTH_SHORT)
                     .show();
