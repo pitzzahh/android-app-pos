@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import org.apppuntukan.databinding.ProductCardBinding;
 import org.apppuntukan.databinding.CartProductCardBinding;
+import org.apppuntukan.viewmodel.ProductsActivityViewModel;
 
 public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerViewAdapter.CardHolder<T>> {
 
     private final Activity activity;
     private final int layoutId;
     private final List<Product> products;
-
     private final RecyclerViewAdapter<T> adapter;
 
     public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> products) {
@@ -101,8 +101,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                 if (removedProduct != null) {
                     adapter.notifyItemRemoved(position);
                 }
-            }
-            else adapter.notifyItemChanged(position);
+            } else adapter.notifyItemChanged(position);
         }
 
         @Override
@@ -119,9 +118,13 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             } else {
                 ProdServ.instance().addProductToCart(products.get(pos));
             }
+            ProductsActivityViewModel
+                    .instance()
+                    .cartCount
+                    .set(products.size());
+
             Snackbar.make(view, "Product added to cart", Snackbar.LENGTH_SHORT)
                     .show();
-            adapter.notifyItemChanged(pos);
         }
     }
 }
