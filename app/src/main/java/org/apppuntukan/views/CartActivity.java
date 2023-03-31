@@ -5,7 +5,7 @@ import org.apppuntukan.R;
 import androidx.databinding.DataBindingUtil;
 import org.apppuntukan.databinding.ActivityCartBinding;
 import org.apppuntukan.databinding.CartProductCardBinding;
-import org.apppuntukan.model.ProductService;
+import org.apppuntukan.model.ProdServ;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +25,7 @@ public class CartActivity extends NoActionBarActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-        RecyclerViewAdapter<CartProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.cart_product_card, ProductService.getInstance().getCartProducts());
+        RecyclerViewAdapter<CartProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.cart_product_card, ProdServ.instance().getCartProducts());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

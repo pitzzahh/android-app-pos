@@ -4,7 +4,7 @@ import org.apppuntukan.R;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import org.apppuntukan.model.ProductService;
+import org.apppuntukan.model.ProdServ;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apppuntukan.databinding.ActivityMainBinding;
@@ -29,7 +29,7 @@ public class MainActivity extends NoActionBarActivity {
 
         setContentView(binding.getRoot());
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter<ProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProductService.getInstance().getProducts());
+        RecyclerViewAdapter<ProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProdServ.instance().getProducts());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new FlexboxLayoutManager(this));
     }

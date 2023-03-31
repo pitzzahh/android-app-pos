@@ -8,7 +8,7 @@ import android.widget.TextView;
 import org.apppuntukan.R;
 import org.apppuntukan.databinding.ActivityConfirmationBinding;
 import org.apppuntukan.model.Product;
-import org.apppuntukan.model.ProductService;
+import org.apppuntukan.model.ProdServ;
 import org.apppuntukan.viewmodel.ConfirmationActivityViewModel;
 import java.util.List;
 
@@ -23,12 +23,12 @@ public class ConfirmationActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         TextView price = findViewById(R.id.lbl_price);
-        price.setText(String.format("$%s", ProductService.getInstance().getTotal()));
+        price.setText(String.format("$%s", ProdServ.instance().getTotal()));
         TextView change = findViewById(R.id.lbl_change);
-        change.setText(String.format("$%s", ProductService.getInstance().getChange()));
+        change.setText(String.format("$%s", ProdServ.instance().getChange()));
 
-        List<Product> products = ProductService.getInstance().getProducts();
-        List<Product> cartProducts = ProductService.getInstance().getCartProducts();
+        List<Product> products = ProdServ.instance().getProducts();
+        List<Product> cartProducts = ProdServ.instance().getCartProducts();
         for (int i = 0; i < cartProducts.size(); i++) {
             Product product = cartProducts.get(i);
             if (products.get(i).getId() == product.getId()) { // FIXME: 25/03/2023 decrease product stock based on ordered quantity
