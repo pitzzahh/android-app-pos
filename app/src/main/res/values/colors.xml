@@ -24,6 +24,8 @@
     <color name="primary_inverted_light">#FFFFFF</color>
     <color name="primary_inverted_dark">#FFCCB1</color>
     <color name="success">#3DD84C</color>
+    <color name="decrease">#C75450</color>
+    <color name="increase">#007E9A</color>
     <color name="notify"></color>
     <color name="danger"></color>
     <color name="warning"></color>
