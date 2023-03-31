@@ -5,13 +5,14 @@ import org.apppuntukan.R;
 import android.widget.TextView;
 import androidx.databinding.DataBindingUtil;
 import org.apppuntukan.databinding.ActivityCartBinding;
+import org.apppuntukan.databinding.CartProductCardBinding;
 import org.apppuntukan.model.ProductService;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apppuntukan.viewmodel.CartActivityViewModel;
-import org.apppuntukan.views.adapter.CartProductAdapter;
 import org.apppuntukan.model.abstractions.NoActionBarActivity;
+import org.apppuntukan.views.adapter.RecyclerViewAdapter;
 
 public class CartActivity extends NoActionBarActivity {
 
@@ -27,7 +28,7 @@ public class CartActivity extends NoActionBarActivity {
         price.setText(String.format("$%s", ProductService.getInstance().computeTotal()));
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-        recyclerView.setAdapter(new CartProductAdapter());
+        recyclerView.setAdapter(new RecyclerViewAdapter<CartProductCardBinding>(this, R.layout.cart_product_card, ProductService.getInstance().getCartProducts()));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
