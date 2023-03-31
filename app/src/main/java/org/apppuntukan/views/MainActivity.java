@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import org.apppuntukan.databinding.ActivityMainBinding;
-import org.apppuntukan.views.adapter.MainCustomerAdapter;
+import org.apppuntukan.databinding.ProductCardBinding;
+import org.apppuntukan.model.ProductService;
+import org.apppuntukan.views.adapter.RecyclerViewAdapter;
 import org.apppuntukan.viewmodel.ProductsActivityViewModel;
 import org.apppuntukan.model.abstractions.NoActionBarActivity;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
@@ -26,9 +28,8 @@ public class MainActivity extends NoActionBarActivity {
         binding.setProductsViewModel(new ViewModelProvider(this).get(ProductsActivityViewModel.class));
 
         setContentView(binding.getRoot());
-
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(new MainCustomerAdapter(this));
+        recyclerView.setAdapter(new RecyclerViewAdapter<ProductCardBinding>(this, R.layout.product_card, ProductService.getInstance().getProducts()));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
     }
