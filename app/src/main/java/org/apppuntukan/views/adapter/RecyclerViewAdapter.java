@@ -10,56 +10,71 @@ import org.apppuntukan.model.Product;
 import org.apppuntukan.viewmodel.ICard;
 import org.apppuntukan.model.ProductService;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import org.apppuntukan.databinding.ProductCardBinding;
+import org.apppuntukan.databinding.CartProductCardBinding;
 
-public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapter.CardHolder> {
+import java.util.List;
+
+public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerViewAdapter.CardHolder<T>> {
 
     private final Activity activity;
+    private final int layoutId;
+    private final List<Product> productList;
 
-    public MainCustomerAdapter(Activity activity) {
+
+    public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> productList) {
         this.activity = activity;
+        this.layoutId = layoutId;
+        this.productList = productList;
     }
 
     @NonNull
     @Override
-    public MainCustomerAdapter.CardHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new CardHolder(DataBindingUtil
+    public RecyclerViewAdapter.CardHolder<T> onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        return new CardHolder<>(DataBindingUtil
                 .inflate(
                         activity.getLayoutInflater(),
-                        R.layout.product_card,
+                        layoutId,
                         viewGroup,
                         false
-                ));
+                ), layoutId);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainCustomerAdapter.CardHolder holder, int position) {
-        Product product = ProductService.getInstance().getProducts().get(position);
-        holder.bindCard(product);
+    public void onBindViewHolder(@NonNull RecyclerViewAdapter.CardHolder<T> holder, int position) {
+        holder.bindCard(productList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return ProductService.getInstance().getProducts().size();
+        return productList.size();
     }
 
-    public static class CardHolder extends RecyclerView.ViewHolder implements ICard {
+    public static class CardHolder<T extends ViewDataBinding> extends RecyclerView.ViewHolder implements ICard {
 
         private final ImageView imageView;
-        private final ProductCardBinding productCardBinding;
+        private final T binding;
 
-        public CardHolder(ProductCardBinding productCardBinding) {
-            super(productCardBinding.getRoot());
-            this.imageView = itemView.findViewById(R.id.productImage);
-            this.productCardBinding = productCardBinding;
+        public CardHolder(T binding, int layoutId) {
+            super(binding.getRoot());
+            this.imageView = itemView.findViewById(layoutId == R.layout.product_card ? R.id.productImage : R.id.cartProductImage);
+            this.binding = binding;
         }
 
         void bindCard(Product product) {
-            productCardBinding.setProduct(product);
-            productCardBinding.setHandler(this);
-            productCardBinding.executePendingBindings();
+            if (binding instanceof ProductCardBinding) {
+                ((ProductCardBinding) binding).setProduct(product);
+                ((ProductCardBinding) binding).setHandler(this);
+            }
+            if (binding instanceof CartProductCardBinding) {
+                ((CartProductCardBinding) binding).setProduct(product);
+                ((CartProductCardBinding) binding).setHandler(this);
+            }
+
+            binding.executePendingBindings();
             if (product.getStock() >= 1) {
                 imageView.setImageResource(R.drawable.product_icon);
             } else {
