@@ -30,6 +30,7 @@
                     android:id="@+id/cartProductImage"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
+                    android:onClick="@{handler::onClickProductImage}"
                     android:contentDescription="@string/product_image"
                     android:src="@drawable/product_icon"
                     tools:ignore="ImageContrastCheck" />
