@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.apppuntukan.R;
-import org.apppuntukan.model.ProductService;
+import org.apppuntukan.model.ProdServ;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class CheckoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_checkout);
         Button button = findViewById(R.id.btn_open_confirmation);
 
-        String totalCartPrice = ProductService.getInstance().computeTotal();
+        String totalCartPrice = ProdServ.instance().computeTotal();
 
         button.setOnClickListener(view -> {
             Intent intent = new Intent(this, ConfirmationActivity.class);
@@ -27,8 +27,8 @@ public class CheckoutActivity extends AppCompatActivity {
             if (payment.matches("\\d|\\d+")) {
                 double total = Double.parseDouble(totalCartPrice);
                 if (Double.parseDouble(payment) >= total) {
-                    ProductService.getInstance().setTotal(total);
-                    ProductService.getInstance().setChange((Double.parseDouble(payment) - total));
+                    ProdServ.instance().setTotal(total);
+                    ProdServ.instance().setChange((Double.parseDouble(payment) - total));
                     startActivity(intent);
                 } else {
                     Snackbar.make(view, "Insufficient cash", Snackbar.LENGTH_SHORT).show();

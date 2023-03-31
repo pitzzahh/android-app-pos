@@ -55,13 +55,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="top"
-                tools:listitem="@layout/cart_product_card"/>
+                android:gravity="top"/>
 
             <Button
                 android:id="@+id/btn_open_checkout"

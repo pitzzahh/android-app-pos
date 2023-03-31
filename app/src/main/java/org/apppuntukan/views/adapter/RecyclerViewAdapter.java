@@ -1,32 +1,33 @@
 package org.apppuntukan.views.adapter;
 
 import java.util.List;
-import org.apppuntukan.R;
 import android.view.View;
 import android.app.Activity;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import org.apppuntukan.model.Product;
 import org.apppuntukan.viewmodel.ICard;
-import org.apppuntukan.model.ProductService;
+import org.apppuntukan.model.ProdServ;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import org.apppuntukan.databinding.ProductCardBinding;
 import org.apppuntukan.databinding.CartProductCardBinding;
+import org.apppuntukan.viewmodel.ProductsActivityViewModel;
 
 public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerViewAdapter.CardHolder<T>> {
 
     private final Activity activity;
     private final int layoutId;
-    private final List<Product> productList;
+    private final List<Product> products;
+    private final RecyclerViewAdapter<T> adapter;
 
-    public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> productList) {
+    public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> products) {
         this.activity = activity;
         this.layoutId = layoutId;
-        this.productList = productList;
+        this.products = products;
+        this.adapter = this;
     }
 
     @NonNull
@@ -38,32 +39,35 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                         layoutId,
                         viewGroup,
                         false
-                ), layoutId);
+                ), adapter, products);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.CardHolder<T> holder, int position) {
-        holder.bindCard(productList.get(position));
+        holder.bindCard(products.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return products.size();
     }
 
     public static class CardHolder<T extends ViewDataBinding> extends RecyclerView.ViewHolder implements ICard {
 
-        private final ImageView imageView;
+        private final RecyclerViewAdapter<T> adapter;
+
+        private final List<Product> products;
         private final T binding;
 
-        public CardHolder(T binding, int layoutId) {
+        public CardHolder(T binding, RecyclerViewAdapter<T> adapter, List<Product> products) {
             super(binding.getRoot());
-            this.imageView = itemView.findViewById(layoutId == R.layout.product_card ? R.id.productImage : R.id.cartProductImage);
             this.binding = binding;
+            this.adapter = adapter;
+            this.products = products;
         }
 
         void bindCard(Product product) {
-            if (binding instanceof ProductCardBinding) {
+            if (binding instanceof ProductCardBinding) { // can't use pattern matching
                 ((ProductCardBinding) binding).setProduct(product);
                 ((ProductCardBinding) binding).setHandler(this);
             }
@@ -71,19 +75,33 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                 ((CartProductCardBinding) binding).setProduct(product);
                 ((CartProductCardBinding) binding).setHandler(this);
             }
-
             binding.executePendingBindings();
-            if (product.getStock() >= 1) {
-                imageView.setImageResource(R.drawable.product_icon);
-            } else {
-                imageView.setImageResource(R.drawable.no_product_icon);
-            }
         }
 
         @Override
         public void onClickCard(View v) {
             Snackbar.make(v, "Card clicked", Snackbar.LENGTH_SHORT)
                     .show();
+        }
+
+        @Override
+        public void onIncreaseQuantity(View v) {
+            int position = super.getLayoutPosition();
+            ProdServ.instance().addProductQuantity(products.get(position));
+            adapter.notifyItemChanged(position);
+        }
+
+        @Override
+        public void onDecreaseQuantity(View v) {
+            int position = super.getLayoutPosition(); // get the position of the card
+            Product product = products.get(position);
+            boolean noQuantityLeft = ProdServ.instance().removeProductQuantityOrRemove(product);
+            if (noQuantityLeft) {
+                Product removedProduct = ProdServ.instance().removeProductFromCart(product);
+                if (removedProduct != null) {
+                    adapter.notifyItemRemoved(position);
+                }
+            } else adapter.notifyItemChanged(position);
         }
 
         @Override
@@ -95,12 +113,16 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
         @Override
         public void onAddToCart(View view) {
             int pos = super.getLayoutPosition(); // get the position of the card
-            System.out.println("position: " + pos);
-            if (ProductService.getInstance().isAlreadyInCart(ProductService.getInstance().getProducts().get(pos))) {
-                ProductService.getInstance().addProductQuantity(ProductService.getInstance().getProducts().get(pos));
+            if (ProdServ.instance().isAlreadyInCart(products.get(pos))) {
+                ProdServ.instance().addProductQuantity(products.get(pos));
             } else {
-                ProductService.getInstance().addProductToCart(ProductService.getInstance().getProducts().get(pos));
+                ProdServ.instance().addProductToCart(products.get(pos));
             }
+            ProductsActivityViewModel
+                    .instance()
+                    .cartCount
+                    .set(products.size());
+
             Snackbar.make(view, "Product added to cart", Snackbar.LENGTH_SHORT)
                     .show();
         }
