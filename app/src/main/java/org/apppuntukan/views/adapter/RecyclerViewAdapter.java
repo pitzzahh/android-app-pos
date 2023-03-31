@@ -87,6 +87,12 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
         }
 
         @Override
+        public void onClickProductImage(View v) {
+            Snackbar.make(v, "Product Image Clicked", Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+
+        @Override
         public void onAddToCart(View view) {
             int pos = super.getLayoutPosition(); // get the position of the card
             System.out.println("position: " + pos);
