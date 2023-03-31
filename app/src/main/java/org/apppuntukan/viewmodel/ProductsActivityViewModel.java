@@ -7,10 +7,19 @@ import androidx.databinding.ObservableField;
 
 public class ProductsActivityViewModel extends ViewModelBase {
 
-    public ObservableField<String> cartCount;
+    static ProductsActivityViewModel model;
+
+    public ObservableField<Integer> cartCount = new ObservableField<>();
 
     public void openCart(View view){
         view.getContext()
                 .startActivity(new Intent(view.getContext(), CartActivity.class));
+    }
+
+    public static ProductsActivityViewModel instance() {
+        if (model == null) {
+            return new ProductsActivityViewModel();
+        }
+        return model;
     }
 }
