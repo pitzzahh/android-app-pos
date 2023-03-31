@@ -2,7 +2,6 @@ package org.apppuntukan.views;
 
 import android.os.Bundle;
 import org.apppuntukan.R;
-import android.widget.TextView;
 import androidx.databinding.DataBindingUtil;
 import org.apppuntukan.databinding.ActivityCartBinding;
 import org.apppuntukan.databinding.CartProductCardBinding;
