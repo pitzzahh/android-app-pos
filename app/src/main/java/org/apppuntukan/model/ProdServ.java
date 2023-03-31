@@ -3,17 +3,18 @@ package org.apppuntukan.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
-public class ProductService {
+public class ProdServ {
 
-    private static ProductService instance;
+    private static ProdServ instance;
 
     private static List<Product> products;
     private final List<Product> cartProducts;
 
-    public ProductService(List<Product> products) {
-        ProductService.products = products;
+    public ProdServ(List<Product> products) {
+        ProdServ.products = products;
         cartProducts = new ArrayList<>();
     }
 
@@ -40,7 +41,7 @@ public class ProductService {
 
     public void addProduct(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        ProductService.getInstance().getProducts().add(product);
+        ProdServ.instance().getProducts().add(product);
     }
 
     public List<Product> getProducts() {
@@ -50,16 +51,24 @@ public class ProductService {
     public void addProductToCart(Product product) {
         product.setQuantity(1);
         Objects.requireNonNull(product, "Product Cannot be null");
-        ProductService.getInstance().getCartProducts().add(product);
+        ProdServ.instance().getCartProducts().add(product);
     }
 
     public List<Product> getCartProducts() {
         return cartProducts;
     }
 
-    public void removeProductFromCart(Product product) {
+    public Product removeProductFromCart(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        ProductService.getInstance().getCartProducts().remove(product);
+        int size = ProdServ.instance()
+                .getCartProducts()
+                .size();
+        for (int i = 0; i < size; i++) {
+            if (ProdServ.instance().getCartProducts().get(i).getId() == product.getId()) {
+                return ProdServ.instance().getCartProducts().remove(i);
+            }
+        }
+        return null; // code smell
     }
 
     public String getSearchTerm() {
@@ -71,23 +80,23 @@ public class ProductService {
     }
 
     public List<Product> searchProduct(String term) {
-        for (Product product : ProductService.getInstance().getProducts()) {
+        for (Product product : ProdServ.instance().getProducts()) {
             if (product.getProductName().equalsIgnoreCase(term) || product.getProductName().contains(term)) {
-                ProductService.getInstance().getProducts().add(product);
+                ProdServ.instance().getProducts().add(product);
             }
         }
-        return ProductService.getInstance().getProducts();
+        return ProdServ.instance().getProducts();
     }
 
     public String computeTotal() {
         double price = 0.0;
-        for (int i = 0; i < ProductService.getInstance().getCartProducts().size(); i++) {
-            int quantity = ProductService.getInstance().getCartProducts().get(i).getQuantity();
+        for (int i = 0; i < ProdServ.instance().getCartProducts().size(); i++) {
+            int quantity = ProdServ.instance().getCartProducts().get(i).getQuantity();
             if (quantity > 1){
-                price += ProductService.getInstance().getCartProducts().get(i).getPrice() * quantity;
+                price += ProdServ.instance().getCartProducts().get(i).getPrice() * quantity;
             }
             else {
-                price += ProductService.getInstance().getCartProducts().get(i).getPrice();
+                price += ProdServ.instance().getCartProducts().get(i).getPrice();
             }
 
         }
@@ -96,9 +105,9 @@ public class ProductService {
 
     public String getProductQuantityInCart(Product product) {
         int count = 1;
-        for (int i = 0; i < ProductService.getInstance().getCartProducts().size(); i++) {
-            if (ProductService.getInstance().getCartProducts().get(i).getId() == product.getId()) {
-                count += ProductService.getInstance().getCartProducts().get(i).getQuantity();
+        for (int i = 0; i < ProdServ.instance().getCartProducts().size(); i++) {
+            if (ProdServ.instance().getCartProducts().get(i).getId() == product.getId()) {
+                count += ProdServ.instance().getCartProducts().get(i).getQuantity();
                 break;
             }
         }
@@ -107,12 +116,12 @@ public class ProductService {
 
     public void addProductQuantity(Product product) {
         product.setQuantity(product.getQuantity() + 1);
-        ProductService.getInstance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+        ProdServ.instance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
     }
 
     private int getI(Product product) {
         for (int i = 0; i < cartProducts.size(); i++) {
-            if (ProductService.getInstance().getCartProducts().get(i).getId() == product.getId()) {
+            if (ProdServ.instance().getCartProducts().get(i).getId() == product.getId()) {
                 return i;
             }
         }
@@ -120,20 +129,20 @@ public class ProductService {
     }
 
     public boolean removeProductQuantityOrRemove(Product product) {
-        if (product.getQuantity() <= 0) return true;
         product.setQuantity(product.getQuantity() - 1);
-        ProductService.getInstance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+        if (product.getQuantity() <= 0) return true;
+        ProdServ.instance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
         return false;
     }
 
-    public static synchronized ProductService getInstance() {
+    public static synchronized ProdServ instance() {
         if (instance == null) {
             List<Product> copy = new ArrayList<>();
             Random random = new Random();
             for (int i = 1; i <= 10; i++) {
                 copy.add(new Product(i, String.format("Example Product %s", i), Double.parseDouble(String.valueOf(random.nextInt(1000) + 1))));
             }
-            instance = new ProductService(copy);
+            instance = new ProdServ(copy);
         }
         return instance;
     }
@@ -148,7 +157,7 @@ public class ProductService {
     }
 
     public boolean isAlreadyInCart(Product product) {
-        List<Product> cartProducts = ProductService.getInstance().getCartProducts();
+        List<Product> cartProducts = ProdServ.instance().getCartProducts();
         for (int i = 0; i < cartProducts.size(); i++) {
             Product cartProduct = cartProducts.get(i);
             if (cartProduct.getId() == product.getId()) {
@@ -159,9 +168,9 @@ public class ProductService {
     }
 
     public int getProductIndexFromCart(Product product) {
-        boolean contains = ProductService.getInstance().getCartProducts().contains(product);
+        boolean contains = ProdServ.instance().getCartProducts().contains(product);
         if (contains) {
-            return ProductService.getInstance().getCartProducts().indexOf(product);
+            return ProdServ.instance().getCartProducts().indexOf(product);
         }
         return -1;
     }
