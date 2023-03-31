@@ -1,5 +1,6 @@
 package org.apppuntukan.views.adapter;
 
+import java.util.List;
 import org.apppuntukan.R;
 import android.view.View;
 import android.app.Activity;
@@ -16,14 +17,11 @@ import com.google.android.material.snackbar.Snackbar;
 import org.apppuntukan.databinding.ProductCardBinding;
 import org.apppuntukan.databinding.CartProductCardBinding;
 
-import java.util.List;
-
 public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerViewAdapter.CardHolder<T>> {
 
     private final Activity activity;
     private final int layoutId;
     private final List<Product> productList;
-
 
     public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> productList) {
         this.activity = activity;
