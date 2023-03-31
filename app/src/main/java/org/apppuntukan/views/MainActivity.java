@@ -29,7 +29,8 @@ public class MainActivity extends NoActionBarActivity {
 
         setContentView(binding.getRoot());
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(new RecyclerViewAdapter<ProductCardBinding>(this, R.layout.product_card, ProductService.getInstance().getProducts()));
+        RecyclerViewAdapter<ProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProductService.getInstance().getProducts());
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
     }
