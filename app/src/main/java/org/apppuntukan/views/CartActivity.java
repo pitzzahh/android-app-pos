@@ -20,7 +20,7 @@ public class CartActivity extends NoActionBarActivity {
         super.onCreate(savedInstanceState);
         ActivityCartBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_cart);
         binding.setCartProductsViewModel(new ViewModelProvider(this).get(CartActivityViewModel.class));
-
+        binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);

@@ -26,7 +26,7 @@ public class MainActivity extends NoActionBarActivity {
 
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setProductsViewModel(new ViewModelProvider(this).get(ProductsActivityViewModel.class));
-
+        binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         RecyclerViewAdapter<ProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProdServ.instance().getProducts());
