@@ -48,6 +48,7 @@ public class ProductService {
     }
 
     public void addProductToCart(Product product) {
+        product.setQuantity(1);
         Objects.requireNonNull(product, "Product Cannot be null");
         ProductService.getInstance().getCartProducts().add(product);
     }
@@ -56,9 +57,9 @@ public class ProductService {
         return cartProducts;
     }
 
-    public boolean removeProductFromCart(Product product) {
+    public void removeProductFromCart(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        return ProductService.getInstance().getCartProducts().remove(product);
+        ProductService.getInstance().getCartProducts().remove(product);
     }
 
     public String getSearchTerm() {
@@ -106,8 +107,23 @@ public class ProductService {
 
     public void addProductQuantity(Product product) {
         product.setQuantity(product.getQuantity() + 1);
-        int i = ProductService.getInstance().getCartProducts().indexOf(product);
-        ProductService.getInstance().getCartProducts().get(i).setQuantity(product.getQuantity());
+        ProductService.getInstance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+    }
+
+    private int getI(Product product) {
+        for (int i = 0; i < cartProducts.size(); i++) {
+            if (ProductService.getInstance().getCartProducts().get(i).getId() == product.getId()) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public boolean removeProductQuantityOrRemove(Product product) {
+        if (product.getQuantity() <= 0) return true;
+        product.setQuantity(product.getQuantity() - 1);
+        ProductService.getInstance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+        return false;
     }
 
     public static synchronized ProductService getInstance() {
