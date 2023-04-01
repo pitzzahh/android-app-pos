@@ -33,6 +33,8 @@ public class Product implements Serializable {
         return quantity;
     }
 
+    public Product() {
+    }
     public Product(int id, String productName, double price) {
         this.id = id;
         this.productName = productName;
