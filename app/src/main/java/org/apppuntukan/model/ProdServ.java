@@ -66,7 +66,7 @@ public class ProdServ {
 
     public Product removeProductFromCart(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        Product remove = ProdServ.instance().getCartProducts().remove(getI(product));
+        Product remove = ProdServ.instance().getCartProducts().remove(getCartProductIndex(product));
         WriteResult result = ProdServ.instance().getCartProductsRepository().remove(remove);
         return result.getAffectedCount() == 1 ? remove : null;
     }
@@ -114,14 +114,14 @@ public class ProdServ {
 
     public void addProductQuantity(Product product) {
         product.setQuantity(product.getQuantity() + 1);
-        ProdServ.instance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+        ProdServ.instance().getCartProducts().get(getCartProductIndex(product)).setQuantity(product.getQuantity());
         WriteResult update = ProdServ.instance()
                 .getCartProductsRepository()
                 .update(product);
         Log.d("update_quantity", String.valueOf(update.getAffectedCount()));
     }
 
-    public int getI(Product product) {
+    public int getCartProductIndex(Product product) {
         for (int i = 0; i < ProdServ.instance().getCartProducts().size(); i++) {
             if (ProdServ.instance().getCartProducts().get(i).getId() == product.getId()) {
                 return i;
@@ -135,9 +135,12 @@ public class ProdServ {
         if (product.getQuantity() <= 0) {
             return true;
         }
-        ProdServ.instance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
         ProdServ.instance()
-                .getProductRepository()
+                .getCartProducts()
+                .get(getCartProductIndex(product))
+                .setQuantity(product.getQuantity());
+        ProdServ.instance()
+                .getCartProductsRepository()
                 .update(product);
         return false;
     }
