@@ -1,25 +1,30 @@
 package org.apppuntukan.model;
 
+import android.util.Log;
+
+import org.apppuntukan.views.MainActivity;
+import org.dizitart.no2.WriteResult;
+import org.dizitart.no2.objects.ObjectRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 
 public class ProdServ {
 
     private static ProdServ instance;
+    private final List<Product> filteredSearchedProducts;
+    private static ObjectRepository<Product> productRepository;
+    private static ObjectRepository<Product> cartProductsRepository;
 
-    private static List<Product> products;
-    private final List<Product> cartProducts;
-
-    public ProdServ(List<Product> products) {
-        ProdServ.products = products;
-        cartProducts = new ArrayList<>();
+    public ProdServ() {
+        filteredSearchedProducts = new ArrayList<>();
+        productRepository = MainActivity.getDb().getRepository("products", Product.class);
+        cartProductsRepository = MainActivity.getDb().getRepository("cartProducts", Product.class);
     }
 
     private String searchTerm;
-
     private double total;
     private double change;
 
@@ -41,34 +46,29 @@ public class ProdServ {
 
     public void addProduct(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        ProdServ.instance().getProducts().add(product);
-    }
-
-    public List<Product> getProducts() {
-        return products;
+        ProdServ.instance().getProductRepository().insert(product);
     }
 
     public void addProductToCart(Product product) {
         product.setQuantity(1);
         Objects.requireNonNull(product, "Product Cannot be null");
         ProdServ.instance().getCartProducts().add(product);
+        ProdServ.instance().getCartProductsRepository().insert(product);
+    }
+
+    public List<Product> getProducts() {
+        return ProdServ.instance().getProductRepository().find().toList();
     }
 
     public List<Product> getCartProducts() {
-        return cartProducts;
+        return ProdServ.instance().getCartProductsRepository().find().toList();
     }
 
     public Product removeProductFromCart(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        int size = ProdServ.instance()
-                .getCartProducts()
-                .size();
-        for (int i = 0; i < size; i++) {
-            if (ProdServ.instance().getCartProducts().get(i).getId() == product.getId()) {
-                return ProdServ.instance().getCartProducts().remove(i);
-            }
-        }
-        return null; // code smell
+        Product remove = ProdServ.instance().getCartProducts().remove(getI(product));
+        WriteResult result = ProdServ.instance().getCartProductsRepository().remove(remove);
+        return result.getAffectedCount() == 1 ? remove : null;
     }
 
     public String getSearchTerm() {
@@ -82,23 +82,21 @@ public class ProdServ {
     public List<Product> searchProduct(String term) {
         for (Product product : ProdServ.instance().getProducts()) {
             if (product.getProductName().equalsIgnoreCase(term) || product.getProductName().contains(term)) {
-                ProdServ.instance().getProducts().add(product);
+                filteredSearchedProducts.add(product);
             }
         }
-        return ProdServ.instance().getProducts();
+        return filteredSearchedProducts;
     }
 
     public String computeTotal() {
         double price = 0.0;
         for (int i = 0; i < ProdServ.instance().getCartProducts().size(); i++) {
             int quantity = ProdServ.instance().getCartProducts().get(i).getQuantity();
-            if (quantity > 1){
+            if (quantity > 1) {
                 price += ProdServ.instance().getCartProducts().get(i).getPrice() * quantity;
-            }
-            else {
+            } else {
                 price += ProdServ.instance().getCartProducts().get(i).getPrice();
             }
-
         }
         return String.valueOf(price);
     }
@@ -117,10 +115,14 @@ public class ProdServ {
     public void addProductQuantity(Product product) {
         product.setQuantity(product.getQuantity() + 1);
         ProdServ.instance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+        WriteResult update = ProdServ.instance()
+                .getCartProductsRepository()
+                .update(product);
+        Log.d("update_quantity", String.valueOf(update.getAffectedCount()));
     }
 
-    private int getI(Product product) {
-        for (int i = 0; i < cartProducts.size(); i++) {
+    public int getI(Product product) {
+        for (int i = 0; i < ProdServ.instance().getCartProducts().size(); i++) {
             if (ProdServ.instance().getCartProducts().get(i).getId() == product.getId()) {
                 return i;
             }
@@ -128,21 +130,27 @@ public class ProdServ {
         return 0;
     }
 
-    public boolean removeProductQuantityOrRemove(Product product) {
+    public boolean updateProductQuantityOrRemoveToCart(Product product) {
         product.setQuantity(product.getQuantity() - 1);
-        if (product.getQuantity() <= 0) return true;
+        if (product.getQuantity() <= 0) {
+            return true;
+        }
         ProdServ.instance().getCartProducts().get(getI(product)).setQuantity(product.getQuantity());
+        ProdServ.instance()
+                .getProductRepository()
+                .update(product);
         return false;
     }
 
     public static synchronized ProdServ instance() {
         if (instance == null) {
-            List<Product> copy = new ArrayList<>();
             Random random = new Random();
-            for (int i = 1; i <= 10; i++) {
-                copy.add(new Product(i, String.format("Example Product %s", i), Double.parseDouble(String.valueOf(random.nextInt(1000) + 1))));
+            instance = new ProdServ();
+            if (productRepository.find().toList().isEmpty()) {
+                for (int i = 1; i <= 10; i++) {
+                    productRepository.insert(new Product(i, String.format("Example Product %s", i), Double.parseDouble(String.valueOf(random.nextInt(1000) + 1))));
+                }
             }
-            instance = new ProdServ(copy);
         }
         return instance;
     }
@@ -167,11 +175,11 @@ public class ProdServ {
         return false;
     }
 
-    public int getProductIndexFromCart(Product product) {
-        boolean contains = ProdServ.instance().getCartProducts().contains(product);
-        if (contains) {
-            return ProdServ.instance().getCartProducts().indexOf(product);
-        }
-        return -1;
+    public ObjectRepository<Product> getProductRepository() {
+        return productRepository;
+    }
+
+    public ObjectRepository<Product> getCartProductsRepository() {
+        return cartProductsRepository;
     }
 }
