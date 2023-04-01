@@ -90,7 +90,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
         }
 
         @Override
-        public void onDecreaseQuantity(View v) {
+        public void onDecreaseQuantity(View v) { // FIXME: 02/04/2023 Cart still shows removed product.
             int position = super.getLayoutPosition();
             Product product = products.get(position);
             boolean toBeRemoved = ProdServ.instance().updateProductQuantityOrRemoveToCart(product);
@@ -98,7 +98,6 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                 Product removedProduct = ProdServ.instance().removeProductFromCart(product);
                 if (removedProduct != null) {
                     adapter.notifyItemRemoved(position);
-                    binding.notifyChange();
                 }
             } else adapter.notifyItemChanged(position);
         }
