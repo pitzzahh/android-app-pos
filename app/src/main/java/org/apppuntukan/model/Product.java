@@ -1,8 +1,23 @@
 package org.apppuntukan.model;
 
+import androidx.annotation.NonNull;
+import org.dizitart.no2.IndexType;
+import org.dizitart.no2.objects.Id;
+import org.dizitart.no2.objects.Index;
+import org.dizitart.no2.objects.Indices;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Product {
+@Indices({
+        @Index(value = "productName", type = IndexType.NonUnique),
+        @Index(value = "price", type = IndexType.NonUnique),
+        @Index(value = "tax", type = IndexType.NonUnique),
+        @Index(value = "stock", type = IndexType.NonUnique),
+        @Index(value = "quantity", type = IndexType.NonUnique)
+})
+public class Product implements Serializable {
+
+    @Id
     private int id;
     private String productName;
     private double price;
@@ -73,6 +88,19 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(productName, price);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", tax=" + tax +
+                ", stock=" + stock +
+                ", quantity=" + quantity +
+                '}';
     }
 }
 
