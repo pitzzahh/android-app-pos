@@ -30,16 +30,18 @@
                 android:layout_marginRight="11dp"
                 android:background="@drawable/textbox_main_bg"
                 android:hint="Search Product"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:padding="5dp"
                 android:textColorHint="#546E7A"
                 tools:ignore="HardcodedText,TouchTargetSizeCheck" />
             <TextView
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginRight="11dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -56,11 +58,11 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/cartBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/button_primary_bg"
                 android:backgroundTint="@color/button_primary_selector"
-                android:hint="Cart(0)"
                 android:onClick="@{productsViewModel::openCart}"
                 android:text='@{productsViewModel.cartCount != null ? String.format("Cart(%d)", productsViewModel.cartCount) : "Cart(0)"}'
                 android:textAlignment="center"
