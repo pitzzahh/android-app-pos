@@ -64,7 +64,7 @@
                 android:background="@drawable/button_primary_bg"
                 android:backgroundTint="@color/button_primary_selector"
                 android:onClick="@{productsViewModel::openCart}"
-                android:text='@{productsViewModel.cartCount != null ? String.format("Cart(%d)", productsViewModel.cartCount) : "Cart(0)"}'
+                android:text='@{productsViewModel.cartCount}'
                 android:textAlignment="center"
                 android:textColorHint="#263238"
                 android:textSize="17sp"
