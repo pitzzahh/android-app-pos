@@ -13,6 +13,7 @@ import java.util.Random;
 
 public class ProdServ {
 
+    private String searchTerm;
     private static ProdServ instance;
     private final List<Product> filteredSearchedProducts;
     private static ObjectRepository<Product> productRepository;
@@ -22,26 +23,6 @@ public class ProdServ {
         filteredSearchedProducts = new ArrayList<>();
         productRepository = MainActivity.getDb().getRepository("products", Product.class);
         cartProductsRepository = MainActivity.getDb().getRepository("cartProducts", Product.class);
-    }
-
-    private String searchTerm;
-    private double total;
-    private double change;
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public double getChange() {
-        return change;
-    }
-
-    public void setChange(double change) {
-        this.change = change;
     }
 
     public void addProduct(Product product) {
