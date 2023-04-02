@@ -34,7 +34,8 @@
                     android:textColor="@color/dark_dark"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textSize="45sp" />
+                    android:textSize="45sp"
+                    tools:ignore="HardcodedText" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -49,40 +50,38 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ImageContrastCheck" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/lbl_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/sample_product_price"
+                    android:text="@{`₱` + confirmationViewModel.payable}"
                     android:textColor="@color/dark_dark"
                     android:textAlignment="center"
                     android:textSize="45sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lbl_change"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Change $12"
+                    android:text="@{`Change: ₱` + confirmationViewModel.change}"
                     android:textAlignment="center"
                     android:textSize="25sp" />
 
                 <Button
-                    android:id="@+id/btn_open_products"
-                    android:layout_width="fill_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginHorizontal="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginBottom="10dp"
-                    android:onClick="@{confirmationViewModel::orderAgain}"
                     android:background="@drawable/button_primary_bg"
+                    android:onClick="@{confirmationViewModel::orderAgain}"
                     android:text="Order Again"
                     android:textAlignment="center"
                     android:textSize="17sp"
-                    app:backgroundTint="@color/button_primary_selector" />
+                    app:backgroundTint="@color/button_primary_selector"
+                    tools:ignore="HardcodedText,VisualLintButtonSize,TextContrastCheck" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
