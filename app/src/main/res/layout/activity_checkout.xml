@@ -65,6 +65,7 @@
                     android:layout_height="0dp">
                 </androidx.recyclerview.widget.RecyclerView>
                 <EditText
+                    android:id="@+id/amountToPay"
                     android:padding="12dp"
                     android:hint="Enter Amount to Pay"
                     android:layout_width="match_parent"
@@ -74,9 +75,9 @@
                     android:background="@drawable/textbox_main_bg"
                     tools:ignore="HardcodedText,VisualLintTextFieldSize"
                     android:autofillHints="amount"
-                    android:inputType="text" />
-
+                    android:inputType="number|numberDecimal" />
                 <Button
+                    android:enabled="@{checkoutViewModel.checkEnabled}"
                     android:id="@+id/btn_open_confirmation"
                     android:layout_width="fill_parent"
                     android:layout_height="45dp"
@@ -89,6 +90,7 @@
                     android:text="Place Order"
                     android:textAlignment="center"
                     android:textSize="17sp"
+                    android:textColor="@color/white"
                     app:backgroundTint="@color/button_primary_selector"
                     tools:ignore="HardcodedText,UnusedAttribute,TextContrastCheck,TouchTargetSizeCheck,VisualLintButtonSize" />
             </LinearLayout>
