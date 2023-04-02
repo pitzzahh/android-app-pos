@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:text="Cart(0)"
+                    android:text="@{cartProductsViewModel.totalProducts}"
                     tools:ignore="HardcodedText" />
 
                 <TextView
