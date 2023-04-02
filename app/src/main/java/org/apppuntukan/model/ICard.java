@@ -1,4 +1,4 @@
-package org.apppuntukan.viewmodel;
+package org.apppuntukan.model;
 
 import android.view.View;
 
