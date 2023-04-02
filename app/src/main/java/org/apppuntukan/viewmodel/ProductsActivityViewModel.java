@@ -3,22 +3,22 @@ package org.apppuntukan.viewmodel;
 import android.view.View;
 import android.content.Intent;
 import org.apppuntukan.views.CartActivity;
-import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 
 public class ProductsActivityViewModel extends ViewModelBase {
 
     static ProductsActivityViewModel model;
 
-    public ObservableField<Integer> cartCount = new ObservableField<>();
+    public MutableLiveData<Integer> cartCount = new MutableLiveData<>();
 
     public void openCart(View view){
         view.getContext()
                 .startActivity(new Intent(view.getContext(), CartActivity.class));
     }
 
-    public static ProductsActivityViewModel instance() {
+    public static synchronized ProductsActivityViewModel instance() {
         if (model == null) {
-            return new ProductsActivityViewModel();
+            model = new ProductsActivityViewModel();
         }
         return model;
     }

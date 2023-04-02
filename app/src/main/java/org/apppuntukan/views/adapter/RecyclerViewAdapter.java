@@ -122,7 +122,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             ProductsActivityViewModel
                     .instance()
                     .cartCount
-                    .set(ProdServ.instance().getCartProducts().size());
+                    .setValue(ProdServ.instance().getCartProducts().size());
             Toast.makeText(v.getContext(), "Product added to cart", Toast.LENGTH_SHORT).show();
             CartActivityViewModel.getInstance().updateCartTotal();
         }
