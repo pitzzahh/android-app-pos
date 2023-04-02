@@ -22,7 +22,6 @@ public class CartActivityViewModel extends ViewModelBase {
 
     public void openCheckout(View view) {
         view.getContext().startActivity(new Intent(view.getContext(), CheckoutActivity.class));
-
     }
 
     @Override
