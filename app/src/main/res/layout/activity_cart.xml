@@ -24,7 +24,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp">
+                android:layout_marginHorizontal="5dp">
                 <TextView
                     android:id="@+id/label_header"
                     app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +36,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:text="Cart(0)"/>
+                    android:text="Cart(0)"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/label_price"
@@ -51,7 +52,8 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -65,19 +67,20 @@
             <Button
                 android:id="@+id/btn_open_checkout"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="48dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:onClick="@{cartProductsViewModel::openCheckout}"
                 android:background="@drawable/button_primary_bg"
                 android:backgroundTint="@color/button_primary_selector"
+                android:onClick="@{cartProductsViewModel::openCheckout}"
                 android:text="Proceed to Checkout"
                 android:textAlignment="center"
+                android:textColor="#263238"
                 android:textSize="17sp"
                 app:backgroundTint="@color/button_primary_selector"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,UnusedAttribute,VisualLintButtonSize" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

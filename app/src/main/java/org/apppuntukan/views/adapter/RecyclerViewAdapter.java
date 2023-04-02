@@ -3,6 +3,7 @@ package org.apppuntukan.views.adapter;
 import java.util.List;
 import android.view.View;
 import android.app.Activity;
+import android.widget.Toast;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import org.apppuntukan.model.Product;
@@ -11,7 +12,6 @@ import org.apppuntukan.model.ProdServ;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.snackbar.Snackbar;
 import org.apppuntukan.databinding.ProductCardBinding;
 import org.apppuntukan.databinding.CartProductCardBinding;
 import org.apppuntukan.viewmodel.ProductsActivityViewModel;
@@ -55,7 +55,6 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
     public static class CardHolder<T extends ViewDataBinding> extends RecyclerView.ViewHolder implements ICard {
 
         private final RecyclerViewAdapter<T> adapter;
-
         private final List<Product> products;
         private final T binding;
 
@@ -80,8 +79,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
 
         @Override
         public void onClickCard(View v) {
-            Snackbar.make(v, "Card clicked", Snackbar.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(v.getContext(), "Card clicked", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -92,11 +90,11 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
         }
 
         @Override
-        public void onDecreaseQuantity(View v) {
-            int position = super.getLayoutPosition(); // get the position of the card
+        public void onDecreaseQuantity(View v) { // FIXME: 02/04/2023 Cart still shows removed product.
+            int position = super.getLayoutPosition();
             Product product = products.get(position);
-            boolean noQuantityLeft = ProdServ.instance().removeProductQuantityOrRemove(product);
-            if (noQuantityLeft) {
+            boolean toBeRemoved = ProdServ.instance().updateProductQuantityOrRemoveToCart(product);
+            if (toBeRemoved) {
                 Product removedProduct = ProdServ.instance().removeProductFromCart(product);
                 if (removedProduct != null) {
                     adapter.notifyItemRemoved(position);
@@ -106,25 +104,21 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
 
         @Override
         public void onClickProductImage(View v) {
-            Snackbar.make(v, "Product Image Clicked", Snackbar.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(v.getContext(), "Product Image Clicked", Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onAddToCart(View view) {
+        public void onAddToCart(View v) {
             int pos = super.getLayoutPosition(); // get the position of the card
-            if (ProdServ.instance().isAlreadyInCart(products.get(pos))) {
+            if (ProdServ.instance().isAlreadyInCart(products.get(pos)))
                 ProdServ.instance().addProductQuantity(products.get(pos));
-            } else {
-                ProdServ.instance().addProductToCart(products.get(pos));
-            }
+            else ProdServ.instance().addProductToCart(products.get(pos));
+
             ProductsActivityViewModel
                     .instance()
                     .cartCount
-                    .set(products.size());
-
-            Snackbar.make(view, "Product added to cart", Snackbar.LENGTH_SHORT)
-                    .show();
+                    .set(ProdServ.instance().getCartProducts().size());
+            Toast.makeText(v.getContext(), "Product added to cart", Toast.LENGTH_SHORT).show();
         }
     }
 }
