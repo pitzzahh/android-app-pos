@@ -19,7 +19,7 @@ public class CartActivity extends NoActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityCartBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_cart);
-        binding.setCartProductsViewModel(new ViewModelProvider(this).get(CartActivityViewModel.class));
+        binding.setCartProductsViewModel(CartActivityViewModel.getInstance());
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 

@@ -46,7 +46,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="10dp"
-                    android:text="$777"
+                    android:text="@{cartProductsViewModel.Total}"
                     android:textSize="24sp"
                     android:textColor="@color/dark_dark"
                     android:textStyle="bold"
