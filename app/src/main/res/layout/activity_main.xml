@@ -64,6 +64,7 @@
                 android:backgroundTint="@color/button_primary_selector"
                 android:onClick="@{productsViewModel::openCart}"
                 android:text='@{productsViewModel.cartCount}'
+                android:enabled="@{productsViewModel.CartEnabled}"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="17sp"
