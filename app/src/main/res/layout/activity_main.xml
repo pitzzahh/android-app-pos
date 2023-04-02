@@ -65,6 +65,7 @@
                 android:onClick="@{productsViewModel::openCart}"
                 android:text='@{productsViewModel.cartCount}'
                 android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="17sp"
                 app:backgroundTint="@color/button_primary_selector"
                 app:layout_constraintEnd_toStartOf="@+id/btn_open_cart"
