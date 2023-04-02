@@ -2,16 +2,15 @@ package org.apppuntukan.views;
 
 import android.os.Bundle;
 import org.apppuntukan.R;
-import androidx.databinding.DataBindingUtil;
-import org.apppuntukan.databinding.ActivityCartBinding;
-import org.apppuntukan.databinding.CartProductCardBinding;
 import org.apppuntukan.model.ProdServ;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import org.apppuntukan.databinding.ActivityCartBinding;
 import org.apppuntukan.viewmodel.CartActivityViewModel;
-import org.apppuntukan.model.abstractions.NoActionBarActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import org.apppuntukan.views.adapter.RecyclerViewAdapter;
+import org.apppuntukan.databinding.CartProductCardBinding;
+import org.apppuntukan.model.abstractions.NoActionBarActivity;
 
 public class CartActivity extends NoActionBarActivity {
 
