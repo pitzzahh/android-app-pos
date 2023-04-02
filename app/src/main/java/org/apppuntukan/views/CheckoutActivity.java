@@ -1,45 +1,48 @@
 package org.apppuntukan.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import com.google.android.material.snackbar.Snackbar;
-
 import org.apppuntukan.R;
-import org.apppuntukan.model.ProdServ;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import androidx.databinding.DataBindingUtil;
+import androidx.appcompat.app.AppCompatActivity;
+import org.apppuntukan.databinding.ActivityCheckoutBinding;
+import org.apppuntukan.viewmodel.CheckoutActivityViewModel;
 
 public class CheckoutActivity extends AppCompatActivity {
+
+    static CheckoutActivity deez;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkout);
-        Button button = findViewById(R.id.btn_open_confirmation);
+        ActivityCheckoutBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_checkout);
+        binding.setCheckoutViewModel(CheckoutActivityViewModel.instance());
+        binding.setLifecycleOwner(this);
+        setContentView(binding.getRoot());
+        binding.amountToPay
+                .addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.toString().matches("\\d|\\d+")) {
+                            CheckoutActivityViewModel.instance().checkEnabled.setValue(true);
+                        } else {
+                            CheckoutActivityViewModel.instance().checkEnabled.setValue(false);
+                        }
+                    }
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        CheckoutActivityViewModel.instance().amount.setValue(s.toString());
+                    }
+                });
+    }
 
-        String totalCartPrice = ProdServ.instance().computeTotal();
-
-        button.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ConfirmationActivity.class);
-            String payment = ((EditText)findViewById(R.id.amount_to_pay)).getText().toString();
-            if (payment.matches("\\d|\\d+")) {
-                double total = Double.parseDouble(totalCartPrice);
-                if (Double.parseDouble(payment) >= total) {
-                    ProdServ.instance().setTotal(total);
-                    ProdServ.instance().setChange((Double.parseDouble(payment) - total));
-                    startActivity(intent);
-                } else {
-                    Snackbar.make(view, "Insufficient cash", Snackbar.LENGTH_SHORT).show();
-                }
-            } else {
-                Snackbar.make(view, "Invalid cash", Snackbar.LENGTH_SHORT).show();
-            }
-        });
-
-        TextView textView = findViewById(R.id.label_price);
-        textView.setText(String.format("$%s", totalCartPrice));
-
+    public static synchronized CheckoutActivity instance() {
+        if (deez == null) {
+            return new CheckoutActivity();
+        }
+        return deez;
     }
 }

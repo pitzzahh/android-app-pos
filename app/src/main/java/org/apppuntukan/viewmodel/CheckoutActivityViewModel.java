@@ -1,37 +1,41 @@
 package org.apppuntukan.viewmodel;
 
-import org.apppuntukan.R;
 import android.view.View;
+import android.widget.Toast;
 import android.content.Intent;
-import android.widget.EditText;
-import android.widget.TextView;
 import org.apppuntukan.model.ProdServ;
+import androidx.lifecycle.MutableLiveData;
 import org.apppuntukan.views.ConfirmationActivity;
-import com.google.android.material.snackbar.Snackbar;
 
 public class CheckoutActivityViewModel extends ViewModelBase {
+    private static CheckoutActivityViewModel deez;
+    public final MutableLiveData<String> payable = new MutableLiveData<>();
+    public final MutableLiveData<String> amount = new MutableLiveData<>();
+    public MutableLiveData<Boolean> checkEnabled = new MutableLiveData<>();
+
+    public CheckoutActivityViewModel() {
+        updateData(new Object[]{ProdServ.instance().computeTotal()});
+    }
 
     public void onConfirmCheckout(View view) { // FIXME: 24/03/2023 might be wrong, don't know how to use.
-        Intent intent = new Intent(view.getContext(), ConfirmationActivity.class);
-
-        String payment = ((EditText) view.findViewById(R.id.amount_to_pay)).getText().toString();
-        String totalCartPrice = ProdServ.instance().computeTotal();
-
-        if (payment.matches("\\d|\\d+")) {
-            double total = Double.parseDouble(totalCartPrice);
-            if (Double.parseDouble(payment) >= total) {
-                ProdServ.instance().setTotal(total);
-                ProdServ.instance().setChange((Double.parseDouble(payment) - total));
-                view.getContext()
-                        .startActivity(intent);
-            } else {
-                Snackbar.make(view, "Insufficient cash", Snackbar.LENGTH_SHORT).show();
-            }
+        String payment = amount.getValue() == null ? "" : amount.getValue();
+        double total = Double.parseDouble(ProdServ.instance().computeTotal());
+        if (Double.parseDouble(payment) >= total) {
+            view.getContext()
+                    .startActivity(new Intent(view.getContext(), ConfirmationActivity.class));
         } else {
-            Snackbar.make(view, "Invalid cash", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), "Insufficient cash", Toast.LENGTH_SHORT).show();
         }
+    }
 
-        TextView textView = view.findViewById(R.id.label_price);
-        textView.setText(String.format("$%s", totalCartPrice));
+    @Override
+    public final <T> void updateData(T[] newData) {
+        payable.setValue(String.valueOf(newData[0]));
+    }
+
+    public static synchronized CheckoutActivityViewModel instance() {
+        if (deez == null)
+            deez = new CheckoutActivityViewModel();
+        return deez;
     }
 }

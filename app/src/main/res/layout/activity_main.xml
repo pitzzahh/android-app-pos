@@ -36,7 +36,7 @@
                 android:inputType="text"
                 android:padding="5dp"
                 android:textColorHint="#546E7A"
-                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck,VisualLintTextFieldSize" />
             <TextView
                 android:layout_marginLeft="11dp"
                 android:layout_marginTop="11dp"
@@ -51,10 +51,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1" />
 
             <Button
@@ -67,13 +66,13 @@
                 android:text='@{productsViewModel.cartCount}'
                 android:enabled="@{productsViewModel.CartEnabled}"
                 android:textAlignment="center"
-                android:textColorHint="#263238"
+                android:textColor="@color/white"
                 android:textSize="17sp"
                 app:backgroundTint="@color/button_primary_selector"
                 app:layout_constraintEnd_toStartOf="@+id/btn_open_cart"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="HardcodedText"
+                tools:ignore="HardcodedText,SpeakableTextPresentCheck,UnusedAttribute,VisualLintButtonSize"
                 tools:layout_editor_absoluteY="0dp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

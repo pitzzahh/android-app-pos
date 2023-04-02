@@ -23,8 +23,7 @@
             android:layout_height="match_parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp">
+                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/label_header"
                     app:layout_constraintTop_toTopOf="parent"
@@ -34,9 +33,9 @@
                     android:layout_marginBottom="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:text="@{cartProductsViewModel.totalProducts}"
+                    android:text="@{`Cart (` + cartProductsViewModel.totalProducts + `)`}"
                     tools:ignore="HardcodedText" />
 
                 <TextView
@@ -46,8 +45,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@{cartProductsViewModel.Total}"
-                    android:textSize="24sp"
+                    android:text="@{`Total: ₱` + cartProductsViewModel.Total}"
+                    android:textSize="20sp"
                     android:textColor="@color/dark_dark"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -57,31 +56,26 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:gravity="top"/>
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1" />
 
             <Button
-                android:enabled="@{cartProductsViewModel.CheckoutEnabled}"
                 android:id="@+id/btn_open_checkout"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_primary_bg"
                 android:backgroundTint="@color/button_primary_selector"
+                android:enabled="@{cartProductsViewModel.CheckoutEnabled}"
                 android:onClick="@{cartProductsViewModel::openCheckout}"
                 android:text="Proceed to Checkout"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textSize="17sp"
                 app:backgroundTint="@color/button_primary_selector"
-                tools:ignore="HardcodedText,UnusedAttribute,VisualLintButtonSize" />
+                tools:ignore="HardcodedText,UnusedAttribute,VisualLintButtonSize,TextContrastCheck" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

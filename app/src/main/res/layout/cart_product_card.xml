@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="product" type="org.apppuntukan.model.Product"/>
-        <variable name="handler" type="org.apppuntukan.viewmodel.ICard"/>
+        <variable name="handler" type="org.apppuntukan.model.ICard"/>
     </data>
     <RelativeLayout
         android:layout_width="match_parent"

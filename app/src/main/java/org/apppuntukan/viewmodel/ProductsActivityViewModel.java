@@ -13,12 +13,10 @@ import java.util.Locale;
 public class ProductsActivityViewModel extends ViewModelBase {
 
     static ProductsActivityViewModel model;
-
-    public MutableLiveData<Boolean> CartEnabled = new MutableLiveData<>();
     public MutableLiveData<String> cartCount = new MutableLiveData<>();
 
     public ProductsActivityViewModel() {
-        updateCartProductCount();
+        updateData(new Object[]{ProdServ.instance().getCartProducts().size()});
     }
 
     public void openCart(View view){
@@ -26,9 +24,9 @@ public class ProductsActivityViewModel extends ViewModelBase {
                 .startActivity(new Intent(view.getContext(), CartActivity.class));
     }
 
-    public void updateCartProductCount(){
-        CartEnabled.setValue(ProdServ.instance().getCartProducts().size() > 0);
-        cartCount.setValue(String.format(Locale.getDefault(),"Cart(%d)", ProdServ.instance().getCartProducts().size()));
+    @Override
+    public <T> void updateData(T[] newData) {
+        cartCount.setValue(String.format(Locale.getDefault(),"Cart(%d)", Integer.parseInt(String.valueOf(newData[0]))));
     }
 
     public static synchronized ProductsActivityViewModel instance() {

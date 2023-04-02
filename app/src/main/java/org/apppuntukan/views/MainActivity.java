@@ -18,9 +18,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 public class MainActivity extends NoActionBarActivity {
 
     static MainActivity mainActivity;
-
-    static Nitrite db;
-
+    private static Nitrite db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

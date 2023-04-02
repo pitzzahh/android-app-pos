@@ -2,6 +2,6 @@ package org.apppuntukan.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 
-public class ViewModelBase extends ViewModel {
-
+abstract class ViewModelBase extends ViewModel {
+    public abstract <T> void updateData(T[] newData);
 }
