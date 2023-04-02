@@ -7,6 +7,7 @@ import android.widget.Toast;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import org.apppuntukan.model.Product;
+import org.apppuntukan.viewmodel.CartActivityViewModel;
 import org.apppuntukan.viewmodel.ICard;
 import org.apppuntukan.model.ProdServ;
 import androidx.databinding.DataBindingUtil;
@@ -87,6 +88,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             int position = super.getLayoutPosition();
             ProdServ.instance().addProductQuantity(products.get(position));
             adapter.notifyItemChanged(position);
+            CartActivityViewModel.getInstance().updateCartTotal();
         }
 
         @Override
@@ -102,6 +104,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                     adapter.notifyItemRangeRemoved(position, products.size());
                 }
             } else adapter.notifyItemChanged(position);
+            CartActivityViewModel.getInstance().updateCartTotal();
         }
 
         @Override
@@ -121,6 +124,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                     .cartCount
                     .set(ProdServ.instance().getCartProducts().size());
             Toast.makeText(v.getContext(), "Product added to cart", Toast.LENGTH_SHORT).show();
+            CartActivityViewModel.getInstance().updateCartTotal();
         }
     }
 }
