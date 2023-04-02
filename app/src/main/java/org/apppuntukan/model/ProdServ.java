@@ -64,11 +64,9 @@ public class ProdServ {
         return ProdServ.instance().getCartProductsRepository().find().toList();
     }
 
-    public Product removeProductFromCart(Product product) {
+    public void removeProductFromCart(Product product) {
         Objects.requireNonNull(product, "Product Cannot be null");
-        Product remove = ProdServ.instance().getCartProducts().remove(getCartProductIndex(product));
-        WriteResult result = ProdServ.instance().getCartProductsRepository().remove(remove);
-        return result.getAffectedCount() == 1 ? remove : null;
+        ProdServ.instance().getCartProductsRepository().remove(product);
     }
 
     public String getSearchTerm() {
