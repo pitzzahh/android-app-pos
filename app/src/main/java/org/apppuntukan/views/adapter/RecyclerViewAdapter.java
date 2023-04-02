@@ -106,8 +106,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             if (toBeRemoved) {
                 if (products.remove(product)) {
                     ProdServ.instance().removeProductFromCart(product);
-                    adapter.notifyItemChanged(position);
-                    adapter.notifyItemRangeRemoved(position, products.size());
+                    adapter.notifyItemRemoved(position);
                 }
             } else adapter.notifyItemChanged(position);
             int size = ProdServ.instance().getCartProducts().size();
