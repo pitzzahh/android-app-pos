@@ -7,13 +7,13 @@ import android.widget.Toast;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import org.apppuntukan.model.Product;
-import org.apppuntukan.viewmodel.CartActivityViewModel;
-import org.apppuntukan.viewmodel.ICard;
 import org.apppuntukan.model.ProdServ;
+import org.apppuntukan.viewmodel.ICard;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 import org.apppuntukan.databinding.ProductCardBinding;
+import org.apppuntukan.viewmodel.CartActivityViewModel;
 import org.apppuntukan.databinding.CartProductCardBinding;
 import org.apppuntukan.viewmodel.ProductsActivityViewModel;
 
@@ -89,6 +89,8 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             ProdServ.instance().addProductQuantity(products.get(position));
             adapter.notifyItemChanged(position);
             CartActivityViewModel.getInstance().updateCartTotal();
+            CartActivityViewModel.getInstance().updateCartProductCount();
+            ProductsActivityViewModel.instance().updateCartProductCount();
         }
 
         @Override
@@ -104,6 +106,8 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                 }
             } else adapter.notifyItemChanged(position);
             CartActivityViewModel.getInstance().updateCartTotal();
+            CartActivityViewModel.getInstance().updateCartProductCount();
+            ProductsActivityViewModel.instance().updateCartProductCount();
         }
 
         @Override
@@ -117,13 +121,10 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             if (ProdServ.instance().isAlreadyInCart(products.get(pos)))
                 ProdServ.instance().addProductQuantity(products.get(pos));
             else ProdServ.instance().addProductToCart(products.get(pos));
-
-            ProductsActivityViewModel
-                    .instance()
-                    .cartCount
-                    .set(ProdServ.instance().getCartProducts().size());
             Toast.makeText(v.getContext(), "Product added to cart", Toast.LENGTH_SHORT).show();
             CartActivityViewModel.getInstance().updateCartTotal();
+            CartActivityViewModel.getInstance().updateCartProductCount();
+            ProductsActivityViewModel.instance().updateCartProductCount();
         }
     }
 }
