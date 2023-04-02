@@ -12,6 +12,7 @@ public class CartActivityViewModel extends ViewModelBase {
     private static CartActivityViewModel _instance;
 
     public MutableLiveData<String> Total = new MutableLiveData<>();
+    public MutableLiveData<Boolean> CheckoutEnabled = new MutableLiveData<>();
 
     public MutableLiveData<String> totalProducts = new MutableLiveData<>();
 
@@ -20,8 +21,8 @@ public class CartActivityViewModel extends ViewModelBase {
         updateCartProductCount();
     }
     public void openCheckout(View view) {
-        view.getContext()
-                .startActivity(new Intent(view.getContext(), CheckoutActivity.class));
+        if(ProdServ.instance().getCartProducts().size() > 0)
+            view.getContext().startActivity(new Intent(view.getContext(), CheckoutActivity.class));
     }
 
     public void updateCartProductCount() {
@@ -30,6 +31,7 @@ public class CartActivityViewModel extends ViewModelBase {
 
     public void updateCartTotal(){
         Total.setValue(String.format("Total: ₱%s", ProdServ.instance().computeTotal()));
+        CheckoutEnabled.setValue(ProdServ.instance().getCartProducts().size() > 0);
     }
 
     public static synchronized CartActivityViewModel getInstance()

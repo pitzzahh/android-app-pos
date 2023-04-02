@@ -65,6 +65,7 @@
                 android:gravity="top"/>
 
             <Button
+                android:enabled="@{cartProductsViewModel.CheckoutEnabled}"
                 android:id="@+id/btn_open_checkout"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
@@ -77,7 +78,7 @@
                 android:onClick="@{cartProductsViewModel::openCheckout}"
                 android:text="Proceed to Checkout"
                 android:textAlignment="center"
-                android:textColor="#263238"
+                android:textColor="#ffffff"
                 android:textSize="17sp"
                 app:backgroundTint="@color/button_primary_selector"
                 tools:ignore="HardcodedText,UnusedAttribute,VisualLintButtonSize" />

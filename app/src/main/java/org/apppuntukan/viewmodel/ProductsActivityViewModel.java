@@ -26,9 +26,9 @@ public class ProductsActivityViewModel extends ViewModelBase {
         cartCount.setValue(String.format(Locale.getDefault(),"Cart(%d)", ProdServ.instance().getCartProducts().size()));
     }
 
-    public static ProductsActivityViewModel instance() {
+    public static synchronized ProductsActivityViewModel instance() {
         if (model == null) {
-            return new ProductsActivityViewModel();
+            model = new ProductsActivityViewModel();
         }
         return model;
     }
