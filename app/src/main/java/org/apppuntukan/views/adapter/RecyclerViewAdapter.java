@@ -6,9 +6,9 @@ import android.app.Activity;
 import android.widget.Toast;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import org.apppuntukan.model.ICard;
 import org.apppuntukan.model.Product;
 import org.apppuntukan.model.ProdServ;
-import org.apppuntukan.viewmodel.ICard;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
@@ -88,9 +88,14 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
             int position = super.getLayoutPosition();
             ProdServ.instance().addProductQuantity(products.get(position));
             adapter.notifyItemChanged(position);
-            CartActivityViewModel.getInstance().updateCartTotal();
-            CartActivityViewModel.getInstance().updateCartProductCount();
-            ProductsActivityViewModel.instance().updateCartProductCount();
+            int size = ProdServ.instance().getCartProducts().size();
+            CartActivityViewModel.getInstance()
+                    .updateData(new Object[]{
+                            size,
+                            ProdServ.instance().computeTotal()
+                    });
+            ProductsActivityViewModel.instance()
+                    .updateData(new Object[]{size});
         }
 
         @Override
@@ -105,9 +110,14 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                     adapter.notifyItemRangeRemoved(position, products.size());
                 }
             } else adapter.notifyItemChanged(position);
-            CartActivityViewModel.getInstance().updateCartTotal();
-            CartActivityViewModel.getInstance().updateCartProductCount();
-            ProductsActivityViewModel.instance().updateCartProductCount();
+            int size = ProdServ.instance().getCartProducts().size();
+            CartActivityViewModel.getInstance()
+                    .updateData(new Object[]{
+                            size,
+                            ProdServ.instance().computeTotal()
+                    });
+            ProductsActivityViewModel.instance()
+                    .updateData(new Object[]{size});
         }
 
         @Override
@@ -122,9 +132,14 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                 ProdServ.instance().addProductQuantity(products.get(pos));
             else ProdServ.instance().addProductToCart(products.get(pos));
             Toast.makeText(v.getContext(), "Product added to cart", Toast.LENGTH_SHORT).show();
-            CartActivityViewModel.getInstance().updateCartTotal();
-            CartActivityViewModel.getInstance().updateCartProductCount();
-            ProductsActivityViewModel.instance().updateCartProductCount();
+            int size = ProdServ.instance().getCartProducts().size();
+            CartActivityViewModel.getInstance()
+                    .updateData(new Object[]{
+                            size,
+                            ProdServ.instance().computeTotal()
+                    });
+            ProductsActivityViewModel.instance()
+                    .updateData(new Object[]{size});
         }
     }
 }
