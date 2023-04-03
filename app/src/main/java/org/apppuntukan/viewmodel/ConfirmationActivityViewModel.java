@@ -22,8 +22,6 @@ public class ConfirmationActivityViewModel extends ViewModelBase {
     }
 
     public void orderAgain(View view) {
-        view.getContext()
-                .startActivity(new Intent(view.getContext(), MainActivity.class));
         for (int i = 0; i < ProdServ.instance().getCartProducts().size(); i++) {
             ProdServ.instance()
                     .getCartProductsRepository()
@@ -32,6 +30,8 @@ public class ConfirmationActivityViewModel extends ViewModelBase {
         ProdServ.instance()
                 .getCartProducts()
                 .clear();
+        view.getContext()
+                .startActivity(new Intent(view.getContext(), MainActivity.class));
     }
 
     @Override
