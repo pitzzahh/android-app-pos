@@ -7,20 +7,22 @@
             name="productsViewModel"
             type="org.apppuntukan.viewmodel.ProductsActivityViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".views.MainActivity">
-        <LinearLayout
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="5dp"
-            android:layout_marginVertical="5dp"
-            android:orientation="vertical"
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
                 android:layout_width="match_parent"
@@ -29,51 +31,75 @@
                 android:layout_marginTop="11dp"
                 android:layout_marginRight="11dp"
                 android:background="@drawable/textbox_main_bg"
-                android:hint="Search Product"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="10dp"
+                android:hint="Search Product"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:padding="5dp"
                 android:textColorHint="#546E7A"
                 tools:ignore="HardcodedText,TouchTargetSizeCheck,VisualLintTextFieldSize" />
-            <TextView
-                android:layout_marginLeft="11dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginRight="11dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="Products"
-                tools:ignore="HardcodedText" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1" />
+        </androidx.appcompat.widget.Toolbar>
 
-            <Button
-                android:id="@+id/cartBtn"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/button_primary_bg"
-                android:backgroundTint="@color/button_primary_selector"
-                android:onClick="@{productsViewModel::openCart}"
-                android:text='@{productsViewModel.cartCount}'
-                android:enabled="@{productsViewModel.CartEnabled}"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                app:backgroundTint="@color/button_primary_selector"
-                app:layout_constraintEnd_toStartOf="@+id/btn_open_cart"
-                app:layout_constraintHorizontal_bias="0.0"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="5dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="HardcodedText,SpeakableTextPresentCheck,UnusedAttribute,VisualLintButtonSize"
-                tools:layout_editor_absoluteY="0dp" />
-        </LinearLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.444">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginRight="11dp"
+                    android:text="Products"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1" />
+
+                <!--            <Button-->
+                <!--                android:id="@+id/cartBtn"-->
+                <!--                android:layout_width="fill_parent"-->
+                <!--                android:layout_height="50dp"-->
+                <!--                android:background="@drawable/button_primary_bg"-->
+                <!--                android:backgroundTint="@color/button_primary_selector"-->
+                <!--                android:onClick="@{productsViewModel::openCart}"-->
+                <!--                android:text='@{productsViewModel.cartCount}'-->
+                <!--                android:textAlignment="center"-->
+                <!--                android:textColor="@color/white"-->
+                <!--                android:textSize="17sp"-->
+                <!--                app:backgroundTint="@color/button_primary_selector"-->
+                <!--                app:layout_constraintEnd_toStartOf="@+id/btn_open_cart"-->
+                <!--                app:layout_constraintHorizontal_bias="0.0"-->
+                <!--                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                tools:ignore="HardcodedText,SpeakableTextPresentCheck,UnusedAttribute,VisualLintButtonSize"-->
+                <!--                tools:layout_editor_absoluteY="0dp" />-->
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
