@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/material_dynamic_secondary30" android:state_enabled="false" />
-    <item android:color="@color/material_dynamic_secondary10" android:state_pressed="true" />
-    <item android:color="@color/design_default_color_secondary" android:state_pressed="false" />
+    <item android:color="#374955" android:state_enabled="false" />
+    <item android:color="#091E28" android:state_pressed="true" />
+    <item android:color="#03DAC6" android:state_pressed="false" />
 </selector>
