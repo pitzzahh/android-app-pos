@@ -2,15 +2,14 @@ package org.apppuntukan.viewmodel;
 
 import android.content.Intent;
 import android.view.View;
-import androidx.lifecycle.MutableLiveData;
 import org.apppuntukan.model.ProdServ;
 import org.apppuntukan.views.CartActivity;
-import java.util.Locale;
+import androidx.databinding.ObservableField;
 
 public class ProductsActivityViewModel extends ViewModelBase {
 
-    static ProductsActivityViewModel model;
-    public MutableLiveData<String> cartCount = new MutableLiveData<>();
+    protected static ProductsActivityViewModel model;
+    public ObservableField<String> cartCount = new ObservableField<>("0");
 
     public ProductsActivityViewModel() {
         updateData(new Object[]{ProdServ.instance().getCartProducts().size()});
@@ -23,7 +22,9 @@ public class ProductsActivityViewModel extends ViewModelBase {
 
     @Override
     public <T> void updateData(T[] newData) {
-        cartCount.setValue(String.format(Locale.getDefault(),"Cart(%d)", Integer.parseInt(String.valueOf(newData[0]))));
+        final int MAX_CART_SHOW = 99;
+        final int toShow = Math.min(Integer.parseInt(String.valueOf(newData[0])), MAX_CART_SHOW);
+        cartCount.set(String.valueOf(toShow));
     }
 
     public static synchronized ProductsActivityViewModel instance() {
