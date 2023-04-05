@@ -14,6 +14,9 @@ import org.apppuntukan.model.abstractions.NoActionBarActivity;
 
 public class CartActivity extends NoActionBarActivity {
 
+    static CartActivity cartActivity;
+    private RecyclerViewAdapter<CartProductCardBinding> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +27,19 @@ public class CartActivity extends NoActionBarActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-        RecyclerViewAdapter<CartProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.cart_product_card, ProdServ.instance().getCartProducts());
+        adapter = new RecyclerViewAdapter<>(this, R.layout.cart_product_card, ProdServ.instance().getCartProducts());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public static synchronized CartActivity instance() {
+        if (cartActivity == null) {
+            return new CartActivity();
+        }
+        return cartActivity;
+    }
+
+    public RecyclerViewAdapter<CartProductCardBinding> getAdapter() {
+        return adapter;
     }
 }
