@@ -30,7 +30,7 @@ public class ConfirmationActivityViewModel extends ViewModelBase {
             product.setStock(product.getStock() - product.getQuantity());
             ProdServ.instance()
                     .getCartProductsRepository()
-                    .remove(ProdServ.instance().getCartProducts().get(i));
+                    .remove(cartProducts.get(i));
             ProdServ.instance()
                     .getProductRepository()
                     .update(product);
