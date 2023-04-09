@@ -15,12 +15,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/editText"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="290dp"
             android:layout_height="40dp"
             android:background="@drawable/textbox_main_bg"
-            android:drawableStart="@drawable/ic_search"
             android:drawablePadding="10dp"
             android:hint="Search Product"
             android:importantForAutofill="no"
@@ -83,7 +82,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@+id/searchView"
             tools:ignore="HardcodedText" />
 
         <androidx.recyclerview.widget.RecyclerView
