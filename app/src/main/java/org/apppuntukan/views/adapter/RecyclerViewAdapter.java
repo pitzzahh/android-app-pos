@@ -1,8 +1,13 @@
 package org.apppuntukan.views.adapter;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.app.Activity;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Toast;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -12,6 +17,7 @@ import org.apppuntukan.model.ProdServ;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.apppuntukan.databinding.ProductCardBinding;
 import org.apppuntukan.viewmodel.CartActivityViewModel;
 import org.apppuntukan.databinding.CartProductCardBinding;
@@ -21,7 +27,7 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
 
     private final Activity activity;
     private final int layoutId;
-    private final List<Product> products;
+    private List<Product> products;
     private final RecyclerViewAdapter<T> adapter;
 
     public RecyclerViewAdapter(Activity activity, int layoutId, List<Product> products) {
@@ -141,4 +147,48 @@ public class RecyclerViewAdapter<T extends ViewDataBinding> extends RecyclerView
                     .updateData(new Object[]{size});
         }
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setFilteredProducts(List<Product> filteredProducts) {
+        System.out.println("filteredProducts = " + filteredProducts);
+        this.products = filteredProducts;
+        notifyDataSetChanged();
+    }
+
+    // FIXME: 09/04/2023 nope
+//    @Override
+//    public Filter getFilter() {
+//        List<Product> filteredList = new ArrayList<>();
+//        return new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+//                if (constraint == null || constraint.length() == 0) {
+//                    filteredList.addAll(products);
+//                } else {
+//                    String pattern = constraint.toString().toLowerCase().trim();
+//                    for (Product product : products) {
+//                        String pName = product.getProductName().toLowerCase().trim();
+//                        if (pName.contains(pattern) || pName.startsWith(pattern)) {
+//                            filteredList.add(product);
+//                        }
+//                    }
+//                }
+//                FilterResults results = new FilterResults();
+//                results.values = filteredList;
+//                return results;
+//            }
+//
+//            @Override
+//            @SuppressWarnings("unchecked")
+//            @SuppressLint("NotifyDataSetChanged")
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+//                products.clear();
+//                products.addAll((Collection<Product>) results.values);
+//                System.out.println("filteredList = " + filteredList);
+//                System.out.println("products = " + products);
+//                System.out.println("\"ADDING ALL\" = " + "ADDING ALL");
+//                notifyDataSetChanged();
+//            }
+//        };
+//    }
 }
