@@ -2,6 +2,8 @@ package org.apppuntukan.views;
 
 import org.apppuntukan.R;
 import android.os.Bundle;
+
+import org.apppuntukan.model.Product;
 import org.dizitart.no2.Nitrite;
 import org.apppuntukan.model.ProdServ;
 import android.annotation.SuppressLint;
@@ -16,6 +18,9 @@ import org.apppuntukan.views.adapter.RecyclerViewAdapter;
 import org.apppuntukan.viewmodel.ProductsActivityViewModel;
 import org.apppuntukan.model.abstractions.NoActionBarActivity;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends NoActionBarActivity {
 
@@ -54,11 +59,10 @@ public class MainActivity extends NoActionBarActivity {
             @Override
             @SuppressLint("NotifyDataSetChanged")
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                filterProducts(newText);
                 return true;
             }
         });
-
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProdServ.instance().getProducts());
@@ -73,5 +77,18 @@ public class MainActivity extends NoActionBarActivity {
         return db;
     }
 
+    public void filterProducts(String pattern) {
+        List<Product> filteredProducts = new ArrayList<>();
+        for (Product product : ProdServ.instance().getProducts()) {
+            String pName = product.getProductName().toLowerCase().trim();
+            if (pName.contains(pattern) || pName.startsWith(pattern)) {
+                filteredProducts.add(product);
+            }
+        }
+        System.out.println("filteredProducts.isEmpty() = " + filteredProducts.isEmpty());
+        if (!filteredProducts.isEmpty()) {
+            adapter.setFilteredProducts(filteredProducts);
+        }
+    }
 
 }
