@@ -4,6 +4,8 @@ import org.apppuntukan.R;
 import android.os.Bundle;
 import org.dizitart.no2.Nitrite;
 import org.apppuntukan.model.ProdServ;
+import android.annotation.SuppressLint;
+import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +19,7 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
 public class MainActivity extends NoActionBarActivity {
 
-    static MainActivity mainActivity;
+    private RecyclerViewAdapter<ProductCardBinding> adapter;
     private static Nitrite db;
 
     @Override
@@ -42,8 +44,24 @@ public class MainActivity extends NoActionBarActivity {
         binding.setLifecycleOwner(this);
         setContentView(binding.getRoot());
 
+        // should be here?
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            @SuppressLint("NotifyDataSetChanged")
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter<ProductCardBinding> adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProdServ.instance().getProducts());
+        adapter = new RecyclerViewAdapter<>(this, R.layout.product_card, ProdServ.instance().getProducts());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new FlexboxLayoutManager(this));
 
@@ -55,11 +73,5 @@ public class MainActivity extends NoActionBarActivity {
         return db;
     }
 
-    public static synchronized MainActivity instance() {
-        if (mainActivity == null) {
-            return new MainActivity();
-        }
-        return mainActivity;
-    }
 
 }
